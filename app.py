@@ -4,10 +4,10 @@ app.py
 Multi-Strategy Hedge Fund Simulation — Indian Markets
 Streamlit Dashboard | 3rd Year College Project
 
-Author  : [Your Name]
-Roll No : [Your Roll Number]
-College : [Your College Name]
-Guide   : [Faculty Name]
+Author  : Jaiman, Kaunteya, Chitraksh, Krish, Palaash, Aanya, Shuddhi, Aditi
+Roll No : J001, J012, J015, J026, J028, J045, J057, J072
+College : Mukesh Patel School of Technology Management and Engineering, Mumbai
+Guide   : Lokesh Sharma
 """
 
 import streamlit as st
@@ -327,7 +327,7 @@ with tab_overview:
     ))
     fig.add_hline(y=1, line_dash="dot", line_color="#30363d", line_width=1)
     fig.update_layout(**PLOTLY_LAYOUT,
-        title=dict(text="Growth of ₹1 Invested · 2018–2023 · NSE Real Data",
+        title=dict(text="Growth of ₹1 Invested · 2018–2026 · NSE Real Data",
                    font=dict(size=14, color="#58a6ff")),
         height=430, hovermode="x unified",
         yaxis_title="Portfolio Value (₹)", xaxis_title="")
@@ -829,10 +829,10 @@ with tab_about:
 |---|---|
 | **Title** | Multi-Strategy Hedge Fund Simulation — Indian Markets |
 | **Course** | Quantitative Finance / Financial Engineering |
-| **Year** | 3rd Year, B.Tech / BMS / MBA (Finance) |
+| **Year** | 3rd Year, B.Tech Data Science |
 | **Data Source** | Yahoo Finance · NSE (Real Adjusted Prices) |
 | **Benchmark** | NIFTY 50 Index (^NSEI) |
-| **Backtest Period** | 2018 – 2023 |
+| **Backtest Period** | 2018 – 2026 |
 
 ---
 
