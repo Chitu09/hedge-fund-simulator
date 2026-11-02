@@ -29,6 +29,13 @@ st.set_page_config(
     initial_sidebar_state = "expanded",
 )
 
+# ── Prometheus metrics (served on :8000/metrics) ──────────────────────────────
+import time
+from metrics import (init_metrics, PAGE_VIEWS, STRATEGY_RUNS, RUN_SECONDS,
+                     DATA_ERRORS, PORTFOLIO_SHARPE)
+init_metrics()
+PAGE_VIEWS.inc()
+
 # ── Custom CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -214,7 +221,9 @@ def run_all_strategies(start_str, end_str, is_end_str,
                        vt_vol_window, vt_target_vol, vt_max_lev,
                        port_target_vol):
     """Run full pipeline — cached so re-runs are instant unless params change."""
-    prices, benchmark, returns, bench_ret = load_data(start_str,datetime.date.today() )
+    STRATEGY_RUNS.inc()
+    _t0 = time.time()
+    prices, benchmark, returns, bench_ret = load_data(start_str, end_str)
 
     # ── Strategy 1: Momentum ──────────────────────────────────────────────────
     mom_ret, mom_w = strategy_momentum(
@@ -244,6 +253,7 @@ def run_all_strategies(start_str, end_str, is_end_str,
 
     all_ret = pd.concat([strat_ret, hf_ret], axis=1)
 
+    RUN_SECONDS.observe(time.time() - _t0)
     return (prices, benchmark, returns, bench_al,
             all_ret, combo_w, z_scores, pairs_df, spread_data)
 
@@ -264,6 +274,7 @@ if "results" not in st.session_state or run_btn:
             st.session_state.params  = dict(
                 start=str(start_date), end=str(end_date))
         except Exception as e:
+            DATA_ERRORS.inc()
             st.error(f"❌ Error: {e}\n\nCheck your internet connection — live NSE data required.")
             st.stop()
 
@@ -274,6 +285,10 @@ STRAT_NAMES = ["Momentum", "MeanReversion", "StatArb", "VolTarget"]
 cum_all     = (1 + all_ret).cumprod()
 cum_bench   = (1 + bench_al).cumprod()
 hf_metrics  = compute_metrics(all_ret["HedgeFund"], bench_al)
+try:
+    PORTFOLIO_SHARPE.set(float(hf_metrics.get("Sharpe Ratio", 0)))
+except (TypeError, ValueError):
+    pass
 
 
 # ════════════════════════════════════════════════════════════════════════════════

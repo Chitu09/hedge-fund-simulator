@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: hedge-fund
+    folder: Hedge Fund Simulator
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

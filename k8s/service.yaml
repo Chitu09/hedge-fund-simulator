@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hedge-fund-sim
+  namespace: hedge-fund
+  labels: { app: hedge-fund-sim }
+spec:
+  type: LoadBalancer          # gives a public IP on AKS
+  # Streamlit uses websockets; keep a user on one pod
+  sessionAffinity: ClientIP
+  selector: { app: hedge-fund-sim }
+  ports:
+    - { name: http,    port: 80,   targetPort: 8501 }
+    - { name: metrics, port: 8000, targetPort: 8000 }

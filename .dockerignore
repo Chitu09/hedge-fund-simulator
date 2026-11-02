@@ -1,0 +1,13 @@
+.git
+.github
+__pycache__/
+*.pyc
+*.zip
+.venv/
+venv/
+terraform/
+k8s/
+monitoring/
+tests/
+.pytest_cache/
+*.md

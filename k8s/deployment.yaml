@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hedge-fund-sim
+  namespace: hedge-fund
+  labels: { app: hedge-fund-sim }
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels: { app: hedge-fund-sim }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxUnavailable: 0, maxSurge: 1 }
+  template:
+    metadata:
+      labels: { app: hedge-fund-sim }
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: app
+          # CI replaces this tag with the commit SHA on every deploy
+          image: ghcr.io/YOUR_GITHUB_USERNAME/hedge-fund-simulator:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: http,    containerPort: 8501 }
+            - { name: metrics, containerPort: 8000 }
+          resources:
+            requests: { cpu: 250m, memory: 512Mi }
+            limits:   { cpu: "1",  memory: 1536Mi }
+          readinessProbe:
+            httpGet: { path: /_stcore/health, port: http }
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /_stcore/health, port: http }
+            initialDelaySeconds: 40
+            periodSeconds: 20
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

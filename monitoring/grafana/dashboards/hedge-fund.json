@@ -1,0 +1,48 @@
+{
+  "title": "Hedge Fund Simulator",
+  "uid": "hfsim",
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "type": "stat", "title": "Page views (1h)",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(increase(hfsim_page_views_total[1h]))" }]
+    },
+    {
+      "type": "stat", "title": "Strategy runs (1h)",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(increase(hfsim_strategy_runs_total[1h]))" }]
+    },
+    {
+      "type": "stat", "title": "Data download errors (1h)",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(increase(hfsim_data_download_errors_total[1h]))" }]
+    },
+    {
+      "type": "stat", "title": "Last portfolio Sharpe",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "max(hfsim_portfolio_sharpe)" }]
+    },
+    {
+      "type": "timeseries", "title": "Pipeline run time (p50 / p95, seconds)",
+      "gridPos": { "x": 0, "y": 5, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "expr": "histogram_quantile(0.5, sum(rate(hfsim_strategy_run_seconds_bucket[5m])) by (le))", "legendFormat": "p50" },
+        { "expr": "histogram_quantile(0.95, sum(rate(hfsim_strategy_run_seconds_bucket[5m])) by (le))", "legendFormat": "p95" }
+      ]
+    },
+    {
+      "type": "timeseries", "title": "Process memory (MB)",
+      "gridPos": { "x": 12, "y": 5, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "process_resident_memory_bytes / 1024 / 1024", "legendFormat": "{{instance}}" }]
+    }
+  ]
+}

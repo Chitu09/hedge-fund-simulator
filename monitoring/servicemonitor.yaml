@@ -1,0 +1,18 @@
+# Apply AFTER installing kube-prometheus-stack (needs its CRDs):
+#   kubectl apply -f monitoring/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: hedge-fund-sim
+  namespace: monitoring
+  labels:
+    release: monitoring        # must match the helm release name
+spec:
+  namespaceSelector:
+    matchNames: [hedge-fund]
+  selector:
+    matchLabels: { app: hedge-fund-sim }
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s
