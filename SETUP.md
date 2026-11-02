@@ -1,7 +1,7 @@
 # DevOps setup — Multi-Strategy Hedge Fund Simulator
 
 This repo already includes the app, the end-date fix and Prometheus metrics wired into `app.py`.
-Replace `YOUR_GITHUB_USERNAME` in `k8s/deployment.yaml` and `terraform/variables.tf` with the account that owns this repo.
+Replace `chitu09` in `k8s/deployment.yaml` and `terraform/variables.tf` with the account that owns this repo.
 
 ```
 .github/workflows/ci-cd.yml   GitHub Actions: lint → test → build → push → deploy
@@ -50,7 +50,7 @@ Grafana → http://localhost:3000 (admin/admin) → folder **Hedge Fund Simulato
 ## 5. CI/CD (GitHub Actions)
 
 Nothing to configure for lint/test/build — pushing to `main` builds and pushes
-`ghcr.io/YOUR_GITHUB_USERNAME/hedge-fund-simulator` with `sha-xxxxxxx`, `main`, `latest`
+`ghcr.io/chitu09/hedge-fund-simulator` with `sha-xxxxxxx`, `main`, `latest`
 (and `1.0.0` for a `v1.0.0` tag).
 
 After the first push: GitHub → your profile → **Packages → hedge-fund-simulator →

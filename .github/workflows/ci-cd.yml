@@ -13,7 +13,7 @@ permissions:
   packages: write        # push images to GitHub Container Registry
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/hedge-fund-simulator
+  IMAGE_NAME: ghcr.io/chitu09/hedge-fund-simulator
 
 jobs:
   # ── 1. Lint + unit tests ───────────────────────────────────────────────────

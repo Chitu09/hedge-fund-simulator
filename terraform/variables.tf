@@ -40,7 +40,7 @@ variable "app_service_sku" {
 
 variable "image_repository" {
   type    = string
-  default = "YOUR_GITHUB_USERNAME/hedge-fund-simulator"
+  default = "chitu09/hedge-fund-simulator"
 }
 
 variable "image_tag" {
